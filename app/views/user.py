@@ -1,6 +1,6 @@
 from flask import (Blueprint, render_template, redirect, request, url_for,
                    abort, flash)
-from flask.ext.login import login_user, logout_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required, current_user
 from itsdangerous import URLSafeTimedSerializer
 from app import app, models, db
 from app.forms import user as user_forms
@@ -191,7 +191,7 @@ def payFail():
 	content = request.json
 	stripe_email = content['data']['object']['email']
 	user = models.User.query.filter_by(email=stripe_email).first()
-	if user is not None: 
+	if user is not None:
 		user.paid = 0
 		db.session.commit()
 		# do anything else, like execute shell command to disable user's service on your app
@@ -202,7 +202,7 @@ def paySuccess():
 	content = request.json
 	stripe_email = content['data']['object']['email']
 	user = models.User.query.filter_by(email=stripe_email).first()
-	if user is not None: 
+	if user is not None:
 		user.paid = 1
 		db.session.commit()
 		# do anything else on payment success, maybe send a thank you email or update more db fields?
